@@ -1,4 +1,4 @@
-const Pool = require('pool');
+const Pool = require('pg').Pool;
 
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
