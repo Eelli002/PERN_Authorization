@@ -1,12 +1,14 @@
 const router = require('express').Router();
+const { application } = require('express');
 const pool = require('./../db');
 const bcrypt = require('bcrypt');
-const jwtGenerator = require('../utils/jwtGenerator');
-const { application } = require('express');
+const JWT_Generator = require('../utils/jwtGenerator');
+const Valid_Info = require('../middleware/validInfo');
 
 // Register New User
 router.post(
-    '/register', 
+    '/register',
+    Valid_Info,
     async (req, res) => {
         try 
         {
@@ -17,32 +19,32 @@ router.post(
             // Check if the user exists, else throw error.
             const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [email]);
             if (user.rows.length) {
-                return res.status(401).send("User already exists");
+                return res.status(401).json("User already exists");
             }
 
 
             // Hash the users password before saving in postgres using Bcrypt
-            const saltRound = 10;
-            const salt = await bcrypt.genSalt(saltRound); // Generate salt
-            const hashedPassword = await bcrypt.hash(password, salt); // Salt password & hash.
+            const salt_round = 10;
+            const salt = await bcrypt.genSalt(salt_round); // Generate salt
+            const hashed_password = await bcrypt.hash(password, salt); // Salt password & hash.
 
 
             // Insert user info into postgres.
-            const newUser = 
+            const new_user = 
                 await pool.query(
                     "INSERT INTO users (user_name, user_email, user_password) VALUES ($1, $2, $3) RETURNING *",
-                    [name, email, hashedPassword]
+                    [name, email, hashed_password]
                 );
 
 
             // Generate our JWT
-            const token = jwtGenerator(newUser.rows[0].user_id);
-            res.json({token})
+            const token = JWT_Generator(new_user.rows[0].user_id);
+            return res.json({token})
         } 
         catch (error) 
         {
             console.error(error.message);
-            res.status(500).send("Server Error");
+            return res.status(500).json("Server Error");
         }
     }
 )
@@ -50,6 +52,7 @@ router.post(
 // Login User
 router.post(
     '/login',
+    Valid_Info,
     async(req, res) => {
         try 
         {
@@ -60,7 +63,7 @@ router.post(
             // 2. If user does not exist, throw error.
             const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [email]);
             if (!(user.rows.length)) {
-                res.status(401).send("Email Not In Use");
+                return res.status(401).json("Email Not In Use");
             }
 
 
@@ -68,17 +71,18 @@ router.post(
             const hashed_password = user.rows[0].user_password;
             const password_match = await bcrypt.compare(password, hashed_password);
             if (!password_match) {
-                res.status(401).send("Password Is Incorrect");
+                return res.status(401).json("Password Is Incorrect");
             }
 
 
             // 4. Return the JWT token
             const token = jwtGenerator(user.rows[0].user_id);
-            res.json({token});
+            return res.json({token});
         } 
         catch (error) 
         {
             console.error(error.message);
+            return res.status(500).json("Server Error");
         }
     }
 )
