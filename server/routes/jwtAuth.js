@@ -88,7 +88,7 @@ router.post(
     }
 );
 
-// Check validity of 
+// Check validity of user token
 router.get(
     '/is-verify',
     Valid_Token,
