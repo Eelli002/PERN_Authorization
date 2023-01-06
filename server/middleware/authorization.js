@@ -1,17 +1,17 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-module.exports = async(req, res, next) => {
+// Checks the validity of JWT passed as the token header of our HTTP request
+const Valid_Token = async(req, res, next) => {
     try 
     {
-        console.log(req.header);
         const jwt_token = req.header("token");
         if (!jwt_token) {
             return res.status(403).send("Not Authorized")
         }
         const payload = jwt.verify(jwt_token, process.env.jwt_secret);
-
-        return req.user = payload.user;
+        req.user_id = payload.user_id;
+        next();
     } 
     catch (error) 
     {
@@ -19,3 +19,5 @@ module.exports = async(req, res, next) => {
         return res.status(403).send("Not Authorized");
     }
 }
+
+module.exports = Valid_Token;

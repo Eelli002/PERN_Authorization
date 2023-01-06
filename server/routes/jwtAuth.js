@@ -4,6 +4,7 @@ const pool = require('../database/db');
 const bcrypt = require('bcrypt');
 const JWT_Generator = require('../utils/jwtGenerator');
 const Valid_Info = require('../middleware/validInfo');
+const Valid_Token = require('../middleware/authorization');
 
 // Register New User
 router.post(
@@ -39,7 +40,7 @@ router.post(
 
             // Generate our JWT
             const token = JWT_Generator(new_user.rows[0].user_id);
-            return res.json({token})
+            return res.json({token});
         } 
         catch (error) 
         {
@@ -47,7 +48,7 @@ router.post(
             return res.status(500).json("Server Error");
         }
     }
-)
+);
 
 // Login User
 router.post(
@@ -76,7 +77,7 @@ router.post(
 
 
             // 4. Return the JWT token
-            const token = jwtGenerator(user.rows[0].user_id);
+            const token = JWT_Generator(user.rows[0].user_id);
             return res.json({token});
         } 
         catch (error) 
@@ -85,6 +86,22 @@ router.post(
             return res.status(500).json("Server Error");
         }
     }
-)
+);
+
+// Check validity of 
+router.get(
+    '/is-verify',
+    Valid_Token,
+    async(req, res) => {
+        try {
+            return res.json(true);
+        } 
+        catch (error) 
+        {
+            console.error(error.message);
+            return res.status(500).json("Server Error");
+        }
+    }
+);
 
 module.exports = router;
