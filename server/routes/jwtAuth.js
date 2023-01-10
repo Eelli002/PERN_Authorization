@@ -57,8 +57,11 @@ router.post(
     async(req, res) => {
         try 
         {
+            console.log("Starting POST request on login: server/jwtAuth")
             // 1. Destructure req.body
             const { email, password } = req.body;
+            console.log("email: ", email);
+            console.log("password: ", password);
 
 
             // 2. If user does not exist, throw error.
@@ -69,8 +72,10 @@ router.post(
 
 
             // 3. Else check if incoming password is same as DB password
+            console.log("Checking password...")
             const hashed_password = user.rows[0].user_password;
             const password_match = await bcrypt.compare(password, hashed_password);
+            console.log("password_matched: ", password_match);
             if (!password_match) {
                 return res.status(401).json("Password Is Incorrect");
             }

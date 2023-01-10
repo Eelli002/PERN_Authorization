@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { Link } from 'react-router-dom';
 
 const Register = ({Set_Auth}) => {
 
@@ -58,6 +59,8 @@ const Register = ({Set_Auth}) => {
                 />
                 <button className='btn-success btn-block'>Submit</button>
             </form>
+            Already a member?
+            <Link to='/login'> Log in now</Link>
         </>
     );
 }
