@@ -57,7 +57,7 @@ router.post(
     async(req, res) => {
         try 
         {
-            console.log("Starting POST request on login: server/jwtAuth")
+            console.log("\nStarting POST request on login: server/routes/jwtAuth")
             // 1. Destructure req.body
             const { email, password } = req.body;
             console.log("email: ", email);
@@ -72,7 +72,7 @@ router.post(
 
 
             // 3. Else check if incoming password is same as DB password
-            console.log("Checking password...")
+            console.log("Checking password")
             const hashed_password = user.rows[0].user_password;
             const password_match = await bcrypt.compare(password, hashed_password);
             console.log("password_matched: ", password_match);
@@ -83,6 +83,7 @@ router.post(
 
             // 4. Return the JWT token
             const token = JWT_Generator(user.rows[0].user_id);
+            console.log('generated JWT: ', token, '\n');
             return res.json({token});
         } 
         catch (error) 
@@ -99,6 +100,7 @@ router.get(
     Valid_Token,
     async(req, res) => {
         try {
+            console.log("Verifying Route: server/routes/get/is-verify")
             return res.json(true);
         } 
         catch (error) 
