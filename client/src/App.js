@@ -1,14 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import Dashboard from './components/dashboard';
 import Login from './components/login';
 import Register from './components/register';
+
+toast.configure();
 
 function App() {
   const [is_authenticated, set_is_authenticated] = useState(false);
 
   const Set_Auth = bool => set_is_authenticated(bool);
+
+  const Authorization_Check = async () => {
+    try 
+    {
+      console.log("Authorizing: client/src/App :: Authorization_Check()")
+      const response = 
+        await fetch(
+          'http://localhost:3002/auth/is-verify',
+          { "method": "GET", "headers": { "token":localStorage.token } }
+        )
+      const parsed_response = await response.json();
+      console.log("parsed_response: ", parsed_response);
+      set_is_authenticated(parsed_response);
+    } 
+    catch (error) {
+      console.error(error.message);
+    }
+
+  }
+
+  useEffect(() => {
+    Authorization_Check();
+  } , [])
 
   return (
     <>

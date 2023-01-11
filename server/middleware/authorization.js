@@ -5,11 +5,15 @@ require('dotenv').config();
 const Valid_Token = async(req, res, next) => {
     try 
     {
+        console.log("Validating token: server/middleware/authorization:: Valid_Token()")
         const jwt_token = req.header("token");
         if (!jwt_token) {
+            console.log("There was no valid token found in the request header:: Valid_Token()")
             return res.status(403).send("Not Authorized")
         }
+        console.log("Token Found")
         const payload = jwt.verify(jwt_token, process.env.jwt_secret);
+        console.log("verification response: ", payload)
         req.user_id = payload.user_id;
         next();
     } 
