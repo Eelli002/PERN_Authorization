@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login = ({ Set_Auth }) => {
 
@@ -13,6 +14,7 @@ const Login = ({ Set_Auth }) => {
         e.preventDefault();
         try
         {
+            console.log("\nLogin Form Submitted: client/src/components/login :: On_Submit_Form()");
             const body = { email, password };
             const response = 
                 await fetch(
@@ -20,8 +22,20 @@ const Login = ({ Set_Auth }) => {
                     { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) }
                 )
             const parsed_response = await response.json();
-            localStorage.setItem('token', parsed_response['token']);
-            Set_Auth(true);
+            console.log("parsed_response: ", parsed_response)
+            if (parsed_response['token']) 
+            {
+                console.log("parsed_resonse token success: setting storage and Auth state to true \n")
+                localStorage.setItem('token', parsed_response['token']);
+                Set_Auth(true);
+                toast.success("login success");
+            }
+            else 
+            {
+                console.log("parsed_response failed Set_Auth to false \n")
+                Set_Auth(false);
+                toast.error(parsed_response);
+            }
         }
         catch (error) {
             // console.error(error.message);
