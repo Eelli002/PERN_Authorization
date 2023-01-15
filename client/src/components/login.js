@@ -28,7 +28,7 @@ const Login = ({ Set_Auth }) => {
                 console.log("parsed_resonse token success: setting storage and Auth state to true \n")
                 localStorage.setItem('token', parsed_response['token']);
                 Set_Auth(true);
-                toast.success("login success");
+                // toast.success("login success");
             }
             else 
             {

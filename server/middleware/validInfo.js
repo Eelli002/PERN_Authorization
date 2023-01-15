@@ -76,11 +76,11 @@ const Valid_Info = (req, res, next) => {
         }
         else if (!Valid_Email(email)) {
             console.log("Invalid email");
-            return res.status(401).json(Email_Criteria_JSON(email));
+            return res.status(401).json("Invalid email");
         }
         else if (!Valid_Password(password)) {
             console.log("Invalid password");
-            return res.status(401).json(Password_Criteria_JSON(password));
+            return res.status(401).json("invalid password");
         }
         else console.log("Credentials passed")
     }
