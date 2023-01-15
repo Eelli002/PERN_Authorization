@@ -20,7 +20,7 @@ router.post(
             // Check if the user exists, else throw error.
             const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [email]);
             if (user.rows.length) {
-                return res.status(401).json("User already exists");
+                return res.status(401).json("Email in use");
             }
 
 

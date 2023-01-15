@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Dashboard from './components/dashboard';
 import Login from './components/login';
 import Register from './components/register';
 
-toast.configure();
 
 function App() {
   const [is_authenticated, set_is_authenticated] = useState(false);
@@ -27,7 +26,8 @@ function App() {
         )
       const parsed_response = await response.json();
       console.log("parsed_response: ", parsed_response);
-      set_is_authenticated(parsed_response);
+      parsed_response === true ? set_is_authenticated(true) : set_is_authenticated(false);
+      //set_is_authenticated(parsed_response == true)
     } 
     catch (error) {
       console.error(error.message);
@@ -57,6 +57,7 @@ function App() {
               element={ is_authenticated ? <Dashboard Set_Auth={Set_Auth}/> : <Navigate to='/login'/> }>
             </Route>
           </Routes>
+          <ToastContainer/>
         </div>
       </Router>
     </>
