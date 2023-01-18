@@ -1,11 +1,11 @@
 
 const Valid_Info = (req, res, next) => {
-    console.log("Starting Valid_Info: server/middlware/validInfo")
+    //console.log("Starting Valid_Info: server/middlware/validInfo")
     const { email, name, password } = req.body;
 
-    console.log("email: ", email)
-    console.log("name: ", name)
-    console.log("password: ", password)
+    //console.log("email: ", email)
+    //console.log("name: ", name)
+    //console.log("password: ", password)
 
     // Email Validation, returns true else we send the criteria that we are missing in res
     const Valid_Email = (email) => {
@@ -53,36 +53,36 @@ const Valid_Info = (req, res, next) => {
     if (req.path === '/register') 
     {
         if (![email, name, password].every(Boolean)) {
-            console.log("Didnt enter name, email, or password");
+            //console.log("Didnt enter name, email, or password");
             return res.status(401).json("Missing Credentials");
         }
         else if (!Valid_Email(email)) {
-            console.log("Invalid email");
+            //console.log("Invalid email");
             return res.status(401).json(Email_Criteria_JSON(email));
         }
         else if (!Valid_Password(password)) {
-            console.log("Invalid password");
+            //console.log("Invalid password");
             return res.status(401).json(Password_Criteria_JSON(password));
         }
-        console.log("Register Credentials Passed");
+        //console.log("Register Credentials Passed");
     }
     else if (req.path === '/login')
     {
-        console.log("On /login, validating")
+        //console.log("On /login, validating")
         
         if (![email, password].every(Boolean)) {
-            console.log("Didnt enter email or password");
+            //console.log("Didnt enter email or password");
             return res.status(401).json("Missing Credentials");
         }
         else if (!Valid_Email(email)) {
-            console.log("Invalid email");
+            //console.log("Invalid email");
             return res.status(401).json("Invalid email");
         }
         else if (!Valid_Password(password)) {
-            console.log("Invalid password");
+            //console.log("Invalid password");
             return res.status(401).json("invalid password");
         }
-        else console.log("Credentials passed")
+        // else console.log("Credentials passed")
     }
     next();
 }

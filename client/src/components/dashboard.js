@@ -7,14 +7,14 @@ const Dashboard = ({ Set_Auth }) => {
     const Get_Name = async () => {
         try 
         {
-            console.log("Getting name: client/components/dashboard :: Get_Name()")
+            // console.log("Getting name: client/components/dashboard :: Get_Name()")
             const response = 
                 await fetch(
                     'http://localhost:3002/dashboard/',
                     { 'method':'GET', 'headers': { 'token':localStorage.token } }
                 );
             const parsed_response = await response.json();
-            console.log("Parsed Response: ", parsed_response);
+            // console.log("Parsed Response: ", parsed_response);
             setName(parsed_response.user_name);
             
         } 
@@ -29,7 +29,7 @@ const Dashboard = ({ Set_Auth }) => {
 
     const Logout = (e) => {
         e.preventDefault();
-        console.log("logging out: client/components/dashboard :: Logout()")
+        // console.log("logging out: client/components/dashboard :: Logout()")
         localStorage.removeItem('token');
         Set_Auth(false);
     }

@@ -18,14 +18,14 @@ function App() {
   const Authorization_Check = async () => {
     try 
     {
-      console.log("Authorizing: client/src/App :: Authorization_Check()")
+      // console.log("Authorizing: client/src/App :: Authorization_Check()")
       const response = 
         await fetch(
           'http://localhost:3002/auth/is-verify',
           { "method": "GET", "headers": { "token":localStorage.token } }
         )
       const parsed_response = await response.json();
-      console.log("parsed_response: ", parsed_response);
+      // console.log("parsed_response: ", parsed_response);
       parsed_response === true ? set_is_authenticated(true) : set_is_authenticated(false);
       //set_is_authenticated(parsed_response == true)
     } 
