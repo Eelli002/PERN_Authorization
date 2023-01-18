@@ -15,7 +15,7 @@ const Register = ({Set_Auth}) => {
         e.preventDefault();
         try 
         {
-            console.log("Submitting registration form: client/src/components/register: On_Submit_Form()");
+            // console.log("Submitting registration form: client/src/components/register: On_Submit_Form()");
             const body = { name, email, password }
             const response = 
                 await fetch(
@@ -23,16 +23,16 @@ const Register = ({Set_Auth}) => {
                     { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)} 
                 )
             const parsed_response = await response.json();
-            console.log(parsed_response);
+            // console.log(parsed_response);
             if (parsed_response['token']) 
             {
-                console.log('got token');
+                // console.log('got token');
                 localStorage.setItem('token', parsed_response['token']);
                 Set_Auth(true);
             }
             else 
             {
-                console.log("Token not found")
+                // console.log("Token not found")
                 Set_Auth(false);
                 toast.error(parsed_response);
             }
